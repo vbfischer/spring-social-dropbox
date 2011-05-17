@@ -4,6 +4,7 @@ import org.springframework.social.dropbox.api.DropboxApi;
 import org.springframework.social.dropbox.api.impl.DropboxTemplate;
 import org.springframework.social.oauth1.AbstractOAuth1ServiceProvider;
 import org.springframework.social.oauth1.OAuth1Template;
+import org.springframework.social.oauth1.OAuth1Version;
 
 /**
  * User: Bryce Fischer
@@ -16,7 +17,8 @@ public class DropboxServiceProvider extends AbstractOAuth1ServiceProvider<Dropbo
         super(consumerKey,  consumerSecret, new OAuth1Template(consumerKey, consumerSecret,
                 "https://api.dropbox.com/0/oauth/request_token",
                 "https://www.dropbox.com/0/oauth/authorize",
-                "https://api.dropbox.com/0/oauth/access_token"));
+                "https://api.dropbox.com/0/oauth/access_token",
+                OAuth1Version.CORE_10));
     }
 
     @Override

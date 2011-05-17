@@ -45,6 +45,7 @@ public class DropboxTemplate extends AbstractOAuth1ApiTemplate implements Dropbo
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new DropboxModule());
+                jsonConverter.setObjectMapper(objectMapper);
             }
         }
     }
