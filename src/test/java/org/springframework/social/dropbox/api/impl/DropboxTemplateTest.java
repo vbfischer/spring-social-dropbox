@@ -36,8 +36,10 @@ public class DropboxTemplateTest {
 
     @Test
     public void getUserProfileValid() throws Exception {
+        final ClassPathResource classPathResource = new ClassPathResource("profile-valid.json", getClass());
+
         mockServer.expect(requestTo("https://api.dropbox.com/0/account/info")).andExpect(method(GET))
-                .andRespond(withResponse(new ClassPathResource("profile-valid.json", getClass()), responseHeaders));
+                .andRespond(withResponse(classPathResource, responseHeaders));
 
         DropboxUserProfile profile = dropbox.getUserProfile();
         assertEquals("USA", profile.getCountry());

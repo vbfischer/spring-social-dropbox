@@ -10,9 +10,20 @@ import java.math.BigInteger;
 public class DropboxUserProfile {
     private String country;
     private String displayName;
+    private String uid;
     private BigInteger sharedQuota;
     private BigInteger quota;
     private BigInteger normalQuota;
+
+    public DropboxUserProfile(String country, String displayName, String uid, BigInteger sharedQuota, BigInteger quota, BigInteger normalQuota) {
+
+        this.country = country;
+        this.displayName = displayName;
+        this.uid = uid;
+        this.sharedQuota = sharedQuota;
+        this.quota = quota;
+        this.normalQuota = normalQuota;
+    }
 
     public String getCountry() {
         return country;
@@ -32,5 +43,9 @@ public class DropboxUserProfile {
 
     public BigInteger getNormalQuota() {
         return normalQuota;
+    }
+
+    public String getUid() {
+        return uid;
     }
 }
