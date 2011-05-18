@@ -27,15 +27,15 @@ public class DropboxAdapter implements ApiAdapter<DropboxApi> {
     @Override
     public void setConnectionValues(DropboxApi dropboxApi, ConnectionValues values) {
         DropboxUserProfile profile = dropboxApi.getUserProfile();
-        values.setProviderUserId(profile.getUid());
+        values.setProviderUserId(profile.getUid().toString());
         values.setDisplayName(profile.getDisplayName());
-
+        values.setProfileUrl(profile.getReferralLink());
     }
 
     @Override
     public UserProfile fetchUserProfile(DropboxApi dropboxApi) {
         DropboxUserProfile profile = dropboxApi.getUserProfile();
-        return new UserProfileBuilder().setName(profile.getDisplayName()).setUsername(profile.getUid()).build();
+        return new UserProfileBuilder().setName(profile.getDisplayName()).setUsername(profile.getEmail()).setEmail(profile.getEmail()).build();
     }
 
     @Override
