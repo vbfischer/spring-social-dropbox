@@ -23,15 +23,18 @@ public class DropboxAdapterTest {
     public void fetchProfile() throws Exception {
         final String country = "USA";
         final String displayName = "DisplayName";
-        final String uid = "UID";
+        final BigInteger uid = BigInteger.valueOf(1);
         final BigInteger sharedQuota = BigInteger.valueOf(123);
         final BigInteger quota = new BigInteger("62277025792");
         final BigInteger normalQuota = BigInteger.valueOf(323);
-        Mockito.when(dropboxApi.getUserProfile()).thenReturn(new DropboxUserProfile(country, displayName, uid, sharedQuota, quota, normalQuota));
+        String email = "emailaddress";
+        String referralLink = "referralLink";
+
+        Mockito.when(dropboxApi.getUserProfile())
+                .thenReturn(new DropboxUserProfile(uid, displayName, email, country, referralLink, sharedQuota, quota, normalQuota));
 
         UserProfile profile = adapter.fetchUserProfile(dropboxApi);
 
         assertEquals(displayName, profile.getName());
-        assertEquals(uid, profile.getUsername());
     }
 }

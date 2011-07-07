@@ -6,7 +6,7 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.social.dropbox.api.DropboxApi;
 import org.springframework.social.dropbox.api.DropboxItemMetadata;
 import org.springframework.social.dropbox.api.DropboxUserProfile;
-import org.springframework.social.oauth1.AbstractOAuth1ApiTemplate;
+import org.springframework.social.oauth1.AbstractOAuth1ApiBinding;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 5/17/11
  * Time: 9:22 AM
  */
-public class DropboxTemplate extends AbstractOAuth1ApiTemplate implements DropboxApi {
+public class DropboxTemplate extends AbstractOAuth1ApiBinding implements DropboxApi {
     public DropboxTemplate(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
         super(consumerKey, consumerSecret, accessToken, accessTokenSecret);
 
@@ -33,7 +33,7 @@ public class DropboxTemplate extends AbstractOAuth1ApiTemplate implements Dropbo
     }
 
     public List<DropboxItemMetadata> getItemMetadata(String path, boolean list, BigInteger maxFiles) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     private void registerDropboxJsonModule(RestTemplate restTemplate) {
