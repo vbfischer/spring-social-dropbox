@@ -20,7 +20,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
     @Test
     public void getUserProfileValid() throws Exception {
         mockServer
-                .expect(requestTo("https://api.dropbox.com/0/account/info"))
+                .expect(requestTo("https://api.dropbox.com/1/account/info"))
                 .andExpect(method(GET))
                 .andRespond(withResponse(jsonResource("/profileValid"), responseHeaders));
 

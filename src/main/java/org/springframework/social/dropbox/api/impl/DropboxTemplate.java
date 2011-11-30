@@ -29,7 +29,7 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
     }
 
     public DropboxUserProfile getUserProfile() {
-        return getRestTemplate().getForObject("https://api.dropbox.com/0/account/info", DropboxUserProfile.class);
+        return getRestTemplate().getForObject("https://api.dropbox.com/1/account/info", DropboxUserProfile.class);
     }
 
     public List<DropboxItemMetadata> getItemMetadata(String path, boolean list, BigInteger maxFiles) {

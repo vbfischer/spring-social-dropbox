@@ -15,9 +15,9 @@ public class DropboxServiceProvider extends AbstractOAuth1ServiceProvider<Dropbo
 
     public DropboxServiceProvider(String consumerKey, String consumerSecret) {
         super(consumerKey,  consumerSecret, new OAuth1Template(consumerKey, consumerSecret,
-                "https://api.dropbox.com/0/oauth/request_token",
-                "https://www.dropbox.com/0/oauth/authorize",
-                "https://api.dropbox.com/0/oauth/access_token",
+                "https://api.dropbox.com/1/oauth/request_token",
+                "https://www.dropbox.com/1/oauth/authorize",
+                "https://api.dropbox.com/1/oauth/access_token",
                 OAuth1Version.CORE_10));
     }
 
