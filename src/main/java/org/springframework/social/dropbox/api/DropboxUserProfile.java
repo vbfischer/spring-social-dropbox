@@ -3,9 +3,10 @@ package org.springframework.social.dropbox.api;
 import java.math.BigInteger;
 
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 9:15 AM
+ * 
+ * Dropbox User Profile
+ * 
+ * @author Bryce Fischer
  */
 public class DropboxUserProfile {
     private String country;

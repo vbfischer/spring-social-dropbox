@@ -4,7 +4,7 @@ import org.springframework.social.connect.ApiAdapter;
 import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.UserProfileBuilder;
-import org.springframework.social.dropbox.api.DropboxApi;
+import org.springframework.social.dropbox.api.Dropbox;
 import org.springframework.social.dropbox.api.DropboxUserProfile;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -13,9 +13,9 @@ import org.springframework.web.client.HttpClientErrorException;
  * Date: 5/17/11
  * Time: 11:33 AM
  */
-public class DropboxAdapter implements ApiAdapter<DropboxApi> {
+public class DropboxAdapter implements ApiAdapter<Dropbox> {
     @Override
-    public boolean test(DropboxApi dropboxApi) {
+    public boolean test(Dropbox dropboxApi) {
         try {
             dropboxApi.getUserProfile();
             return true;
@@ -25,7 +25,7 @@ public class DropboxAdapter implements ApiAdapter<DropboxApi> {
     }
 
     @Override
-    public void setConnectionValues(DropboxApi dropboxApi, ConnectionValues values) {
+    public void setConnectionValues(Dropbox dropboxApi, ConnectionValues values) {
         DropboxUserProfile profile = dropboxApi.getUserProfile();
         values.setProviderUserId(profile.getUid().toString());
         values.setDisplayName(profile.getDisplayName());
@@ -33,13 +33,13 @@ public class DropboxAdapter implements ApiAdapter<DropboxApi> {
     }
 
     @Override
-    public UserProfile fetchUserProfile(DropboxApi dropboxApi) {
+    public UserProfile fetchUserProfile(Dropbox dropboxApi) {
         DropboxUserProfile profile = dropboxApi.getUserProfile();
         return new UserProfileBuilder().setName(profile.getDisplayName()).setUsername(profile.getEmail()).setEmail(profile.getEmail()).build();
     }
 
     @Override
-    public void updateStatus(DropboxApi dropboxApi, String s) {
+    public void updateStatus(Dropbox dropboxApi, String s) {
         // Not Supported
     }
 }

@@ -3,7 +3,7 @@ package org.springframework.social.dropbox.connect;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.social.connect.UserProfile;
-import org.springframework.social.dropbox.api.DropboxApi;
+import org.springframework.social.dropbox.api.Dropbox;
 import org.springframework.social.dropbox.api.DropboxUserProfile;
 
 import java.math.BigInteger;
@@ -17,7 +17,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class DropboxAdapterTest {
     private DropboxAdapter adapter = new DropboxAdapter();
-    private DropboxApi dropboxApi = Mockito.mock(DropboxApi.class);
+    private Dropbox dropboxApi = Mockito.mock(Dropbox.class);
 
     @Test
     public void fetchProfile() throws Exception {

@@ -1,15 +1,28 @@
 package org.springframework.social.dropbox.connect;
 
 import org.springframework.social.connect.support.OAuth1ConnectionFactory;
-import org.springframework.social.dropbox.api.DropboxApi;
+import org.springframework.social.dropbox.api.Dropbox;
 
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 11:38 AM
+ * Dropbox Connection Factory
+ * 
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
-public class DropboxConnectionFactory extends OAuth1ConnectionFactory<DropboxApi> {
-    public DropboxConnectionFactory(String consumerKey, String consumerSecret) {
-        super("dropbox", new DropboxServiceProvider(consumerKey, consumerSecret), new DropboxAdapter());
+public class DropboxConnectionFactory extends OAuth1ConnectionFactory<Dropbox> {
+	
+	/**
+	 * Dropbox Connection Factory
+	 * 
+	 * appFolder must align with how app is registered in Dropbox.
+	 * App can be allowed access to only an app folder (default)
+	 * or the whole of Dropbox
+	 * 
+	 * @param appKey Registered key
+	 * @param appSecret Registered
+	 * @param appFolder Whether to use sandboxed app folder or access whole of Dropbox
+	 */
+    public DropboxConnectionFactory(String appKey, String appSecret, boolean appFolder) {
+        super("dropbox", new DropboxServiceProvider(appKey, appSecret, appFolder), new DropboxAdapter());
     }
 }
