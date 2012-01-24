@@ -7,9 +7,8 @@ import org.springframework.social.oauth1.OAuth1Template;
 import org.springframework.social.oauth1.OAuth1Version;
 
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 11:29 AM
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
 public class DropboxServiceProvider extends AbstractOAuth1ServiceProvider<Dropbox> {
 	private final boolean appFolder;

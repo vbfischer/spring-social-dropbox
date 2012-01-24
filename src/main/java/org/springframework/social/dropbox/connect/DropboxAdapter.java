@@ -9,9 +9,8 @@ import org.springframework.social.dropbox.api.DropboxUserProfile;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 11:33 AM
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
 public class DropboxAdapter implements ApiAdapter<Dropbox> {
     @Override

@@ -12,9 +12,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 11:07 AM
+ * @author Bryce Fischer
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = DropboxUserProfileMixin.DropboxUserProfileDeserializer.class)

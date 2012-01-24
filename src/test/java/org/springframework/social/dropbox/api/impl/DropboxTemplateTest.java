@@ -1,18 +1,5 @@
 package org.springframework.social.dropbox.api.impl;
 
-import static junit.framework.Assert.assertEquals;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
-import static org.springframework.social.test.client.RequestMatchers.method;
-import static org.springframework.social.test.client.RequestMatchers.requestTo;
-import static org.springframework.social.test.client.ResponseCreators.withResponse;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.math.BigInteger;
-import java.util.List;
-
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,10 +8,20 @@ import org.springframework.social.dropbox.api.DropboxUserProfile;
 import org.springframework.social.dropbox.api.FileUrl;
 import org.springframework.social.dropbox.api.Metadata;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.math.BigInteger;
+import java.util.List;
+
+import static junit.framework.Assert.assertEquals;
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.social.test.client.RequestMatchers.method;
+import static org.springframework.social.test.client.RequestMatchers.requestTo;
+import static org.springframework.social.test.client.ResponseCreators.withResponse;
+
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 9:41 AM
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
 public class DropboxTemplateTest extends AbstractDropboxApiTest {
     @Test

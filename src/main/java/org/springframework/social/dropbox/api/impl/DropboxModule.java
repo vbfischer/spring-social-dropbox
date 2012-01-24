@@ -7,9 +7,8 @@ import org.springframework.social.dropbox.api.FileUrl;
 import org.springframework.social.dropbox.api.Metadata;
 
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 11:06 AM
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
 public class DropboxModule extends SimpleModule {
     public DropboxModule() {

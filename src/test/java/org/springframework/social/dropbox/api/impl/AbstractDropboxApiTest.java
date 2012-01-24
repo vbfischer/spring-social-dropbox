@@ -1,8 +1,5 @@
 package org.springframework.social.dropbox.api.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.junit.Before;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -10,11 +7,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.social.test.client.MockRestServiceServer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
- * User: Bryce Fischer
- * Date: 7/7/11
- * Time: 1:01 PM
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
 public abstract class AbstractDropboxApiTest {
     protected DropboxTemplate dropbox;

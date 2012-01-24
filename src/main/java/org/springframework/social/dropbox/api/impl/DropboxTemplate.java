@@ -1,9 +1,5 @@
 package org.springframework.social.dropbox.api.impl;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.util.List;
-
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -13,11 +9,7 @@ import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.social.dropbox.api.Dropbox;
-import org.springframework.social.dropbox.api.DropboxFile;
-import org.springframework.social.dropbox.api.DropboxUserProfile;
-import org.springframework.social.dropbox.api.FileUrl;
-import org.springframework.social.dropbox.api.Metadata;
+import org.springframework.social.dropbox.api.*;
 import org.springframework.social.oauth1.AbstractOAuth1ApiBinding;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,10 +18,13 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 9:22 AM
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
 public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox {
 	private final String appFolderUrl;

@@ -11,9 +11,8 @@ import java.math.BigInteger;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * User: Bryce Fischer
- * Date: 5/17/11
- * Time: 11:40 AM
+ * @author Bryce Fischer
+ * @author Robert Drysdale
  */
 public class DropboxAdapterTest {
     private DropboxAdapter adapter = new DropboxAdapter();

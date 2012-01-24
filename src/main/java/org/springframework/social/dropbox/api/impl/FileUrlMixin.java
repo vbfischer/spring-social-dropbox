@@ -1,11 +1,15 @@
 package org.springframework.social.dropbox.api.impl;
 
-import java.util.Date;
-
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.Date;
+
+/**
+ * @author Robert Drysdale
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FileUrlMixin {
 	@JsonCreator
