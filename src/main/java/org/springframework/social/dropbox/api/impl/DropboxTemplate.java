@@ -41,133 +41,250 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
     }
 
     public DropboxUserProfile getUserProfile() {
-        return getRestTemplate().getForObject(ACCOUNT_INFO_URL, DropboxUserProfile.class);
+        return getUserProfile(null);
+    }
+    
+    public DropboxUserProfile getUserProfile(String locale) {
+        
+        String queryString = "";
+        if (locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        return getRestTemplate().getForObject(ACCOUNT_INFO_URL + queryString, DropboxUserProfile.class);
     }
 
     public Metadata getItemMetadata(String path) {
-        return getRestTemplate().getForObject(METADATA_URL, Metadata.class, appFolderUrl, path); 
+        return getItemMetadata(path, 10000, null, true, false, null, null); 
+    }
+    
+    public Metadata getItemMetadata(String path, String hash) {
+        return getItemMetadata(path, 10000, hash, true, false, null, null); 
+    }
+    
+    public Metadata getItemMetadata(String path, int fileLimit, String hash, boolean list, boolean includeDeleted, String rev,
+            String locale)
+    {
+        String queryString=""; 
+        if (fileLimit != 10000){queryString = addParam(queryString, "file_limit=" + fileLimit);}
+        if (hash != null){queryString = addParam(queryString, "hash=" + hash);}
+        if (!list){queryString = addParam(queryString, "list=" + list);}
+        if (includeDeleted){queryString = addParam(queryString, "include_deleted=" + includeDeleted);}
+        if (rev != null){queryString = addParam(queryString, "rev=" + rev);}
+        if (locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        return getRestTemplate().getForObject(METADATA_URL + queryString, Metadata.class, appFolderUrl, path); 
     }
     
     public Metadata restore(String path, String rev) {
-        return getRestTemplate().getForObject(RESTORE_URL + "?rev=" + rev, Metadata.class, appFolderUrl, path); 
+        return restore(path, rev, null); 
+    }
+    
+    public Metadata restore(String path, String rev, String locale)
+    {
+        String queryString = "";
+        if (rev != null){queryString = addParam(queryString, "rev=" + rev);}
+        if (locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        return getRestTemplate().getForObject(RESTORE_URL + queryString, Metadata.class, appFolderUrl, path);
     }
     
     public Metadata copy(String fromPath, String toPath) {
-    	MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
-    	vars.add("root", appFolderUrl);
-    	vars.add("from_path", fromPath);
-    	vars.add("to_path", toPath);
+        return copy(fromPath, toPath, null); 
+    }
+    
+    public Metadata copy(String fromPath, String toPath, String locale)
+    {
+        MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
+        vars.add("root", appFolderUrl);
+        vars.add("from_path", fromPath);
+        vars.add("to_path", toPath);
+        if (locale != null){vars.add("locale", locale);}
         return getRestTemplate().postForObject(COPY_URL, vars, Metadata.class); 
     }
     
     public Metadata createFolder(String folder) {
-    	MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
-    	vars.add("root", appFolderUrl);
-    	vars.add("path", folder);
-        return getRestTemplate().postForObject(CREATE_FOLDER_URL, vars, Metadata.class); 
+    	return createFolder(folder, null); 
+    }
+    
+    public Metadata createFolder(String folder, String locale)
+    {
+        MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
+        vars.add("root", appFolderUrl);
+        vars.add("path", folder);
+        if (locale != null){vars.add("locale", locale);}
+        return getRestTemplate().postForObject(CREATE_FOLDER_URL, vars, Metadata.class);
     }
     
     public Metadata delete(String path) {
-    	MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
-    	vars.add("root", appFolderUrl);
-    	vars.add("path", path);
-        return getRestTemplate().postForObject(DELETE_URL, vars, Metadata.class); 
+    	return delete(path, null); 
+    }
+    
+    public Metadata delete(String path, String locale)
+    {
+        MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
+        vars.add("root", appFolderUrl);
+        vars.add("path", path);
+        if (locale != null){vars.add("locale", locale);}
+        return getRestTemplate().postForObject(DELETE_URL, vars, Metadata.class);
     }
     
     public Metadata move(String fromPath, String toPath) {
-    	MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
-    	vars.add("root", appFolderUrl);
-    	vars.add("from_path", fromPath);
-    	vars.add("to_path", toPath);
-        return getRestTemplate().postForObject(MOVE_URL, vars, Metadata.class); 
+    	return move(fromPath, toPath, null); 
+    }
+    
+    public Metadata move(String fromPath, String toPath, String locale)
+    {
+        MultiValueMap<String, String> vars = new LinkedMultiValueMap<String, String>();
+        vars.add("root", appFolderUrl);
+        vars.add("from_path", fromPath);
+        vars.add("to_path", toPath);
+        if (locale != null){vars.add("locale", locale);}
+        return getRestTemplate().postForObject(MOVE_URL, vars, Metadata.class);
     }
     
     public List<Metadata> getRevisions(String path) {
-        JsonNode node = getRestTemplate().getForObject(REVISIONS_URL, JsonNode.class, appFolderUrl, path);
+        return getRevisions(path, 10, null);
+    }
+    
+    public List<Metadata> getRevisions(String path, int revLimit, String locale)
+    {
+        String queryString = "";
+        if (revLimit != 10){queryString = addParam(queryString, "rev_limit=" + revLimit);}
+        if (locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        
+        JsonNode node = getRestTemplate().getForObject(REVISIONS_URL + queryString, JsonNode.class, appFolderUrl, path);
         
         try {
-        	return objectMapper.readValue(node, new TypeReference<List<Metadata>>() {});
+            return objectMapper.readValue(node, new TypeReference<List<Metadata>>() {});
         }
         catch (Exception e) {
-        	throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
     
     public List<Metadata> search(String path, String query) {
-        JsonNode node = getRestTemplate().getForObject(SEARCH_URL + "?query=" + query, JsonNode.class, appFolderUrl, path);
+        return search(path, query, 1000, false, null);
+    }
+    
+    public List<Metadata> search(String path, String query, int fileLimit, boolean includeDeleted, String locale)
+    {
+        String queryString = "";
+        addParam(queryString, "query=" + query);
+        if (fileLimit != 1000){queryString = addParam(queryString, "file_limit=" + fileLimit);}
+        if (includeDeleted){queryString = addParam(queryString, "include_deleted=" + includeDeleted);}
+        if (locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        
+        JsonNode node = getRestTemplate().getForObject(SEARCH_URL + queryString, JsonNode.class, appFolderUrl, path);
         
         try {
-        	return objectMapper.readValue(node, new TypeReference<List<Metadata>>() {});
+            return objectMapper.readValue(node, new TypeReference<List<Metadata>>() {});
         }
         catch (Exception e) {
-        	throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
     
     public DropboxFile getThumbnail(String path) {
-    	try {
-	    	UriTemplate uriTemplate = new UriTemplate(THUMBNAILS_URL);
-			URI uri = uriTemplate.expand(appFolderUrl, path);
-	    	ClientHttpResponse response = getRestTemplate().getRequestFactory().createRequest(uri, HttpMethod.GET).execute();
-	    	HttpHeaders headers = response.getHeaders();
-	    	
-	    	return new DropboxFile(
-	    			headers.getContentType().toString(), 
-	    			headers.getContentLength(),
-	    			response.getBody());
-    	}
-    	catch (Exception e) {
-    		throw new RuntimeException(e);
-    	}
+    	return getThumbnail(path, null, null);
+    }
+    
+    public DropboxFile getThumbnail(String path, String format, String size)
+    {
+        String queryString = "";
+        if(format != null){queryString = addParam(queryString, "format="+format);}
+        if(size != null){queryString = addParam(queryString, "size="+size);}
+        
+        try {
+            UriTemplate uriTemplate = new UriTemplate(THUMBNAILS_URL + queryString);
+            URI uri = uriTemplate.expand(appFolderUrl, path);
+            ClientHttpResponse response = getRestTemplate().getRequestFactory().createRequest(uri, HttpMethod.GET).execute();
+            HttpHeaders headers = response.getHeaders();
+            
+            return new DropboxFile(
+                    headers.getContentType().toString(), 
+                    headers.getContentLength(),
+                    response.getBody());
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
     public DropboxFile getFile(String path) {
-    	try {
-    	UriTemplate uriTemplate = new UriTemplate(FILE_URL);
-		URI uri = uriTemplate.expand(appFolderUrl, path);
-    	ClientHttpResponse response = getRestTemplate().getRequestFactory().createRequest(uri, HttpMethod.GET).execute();
-    	HttpHeaders headers = response.getHeaders();
-    	
-    	return new DropboxFile(
-    			headers.getContentType().toString(), 
-    			headers.getContentLength(),
-    			response.getBody());
-    	}
-    	catch (Exception e) {
-    		throw new RuntimeException(e);
-    	}
+    	return getFile(path, null);
+    }
+    
+    public DropboxFile getFile(String path, String rev)
+    {
+        String queryString = "";
+        if(rev != null){queryString = addParam(queryString, "rev="+rev);}
+        
+        try {
+            UriTemplate uriTemplate = new UriTemplate(FILE_URL + queryString);
+            URI uri = uriTemplate.expand(appFolderUrl, path);
+            ClientHttpResponse response = getRestTemplate().getRequestFactory().createRequest(uri, HttpMethod.GET).execute();
+            HttpHeaders headers = response.getHeaders();
+            
+            return new DropboxFile(
+                    headers.getContentType().toString(), 
+                    headers.getContentLength(),
+                    response.getBody());
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
     }
     
     public FileUrl getMedia(String path) {
-    	return getRestTemplate().getForObject(MEDIA_URL, FileUrl.class, appFolderUrl, path); 
+    	return getMedia(path, null); 
+    }
+    
+    public FileUrl getMedia(String path, String locale)
+    {
+        String queryString = "";
+        if(locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        return getRestTemplate().getForObject(MEDIA_URL + queryString, FileUrl.class, appFolderUrl, path);
     }
     
     public FileUrl getShare(String path) {
-    	return getRestTemplate().getForObject(SHARES_URL, FileUrl.class, appFolderUrl, path); 
+    	return getShare(path, null); 
+    }
+    
+    public FileUrl getShare(String path, String locale)
+    {
+        String queryString = "";
+        if(locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        return getRestTemplate().getForObject(SHARES_URL, FileUrl.class, appFolderUrl, path);
     }
     
     public Metadata putFile(String path, byte[] file) {
-    	UriTemplate uriTemplate = new UriTemplate(FILE_PUT_URL);
-		URI uri = uriTemplate.expand(appFolderUrl, path);
-    	
-		try {
-	    	ClientHttpRequest request = getRestTemplate().getRequestFactory().createRequest(uri, HttpMethod.PUT);
-	    	request.getBody().write(file);
-	    	
-	    	ClientHttpResponse response = request.execute();
-	    	ResponseErrorHandler errorHandler = new DefaultResponseErrorHandler();
-	    	if (errorHandler.hasError(response)) {
-	    		errorHandler.handleError(response);
-	    		return null;
-	    	}
-	    	else {
-	    		InputStream stream = response.getBody();
-	    		return objectMapper.readValue(stream, Metadata.class);
-	    	}
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+        return putFile(path, file, null, true, null);
+    }
+    
+    public Metadata putFile(String path, byte[] file, String locale, boolean overwrite, String parentRev)
+    {
+        String queryString = "";
+        if(locale != null){queryString = addParam(queryString, "locale=" + locale);}
+        if(overwrite != true){queryString = addParam(queryString, "overwrite=" + overwrite);}
+        if(parentRev != null){queryString = addParam(queryString, "parentRev=" + parentRev);}
+        
+        UriTemplate uriTemplate = new UriTemplate(FILE_PUT_URL + queryString);
+        URI uri = uriTemplate.expand(appFolderUrl, path);
+        
+        try {
+            ClientHttpRequest request = getRestTemplate().getRequestFactory().createRequest(uri, HttpMethod.PUT);
+            request.getBody().write(file);
+            
+            ClientHttpResponse response = request.execute();
+            ResponseErrorHandler errorHandler = new DefaultResponseErrorHandler();
+            if (errorHandler.hasError(response)) {
+                errorHandler.handleError(response);
+                return null;
+            }
+            else {
+                InputStream stream = response.getBody();
+                return objectMapper.readValue(stream, Metadata.class);
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
     private void registerDropboxJsonModule(RestTemplate restTemplate) {
@@ -182,6 +299,37 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
                 jsonConverter.setObjectMapper(objectMapper);
             }
         }
+    }
+    
+    /**
+     * Add parameters to queryString. If null or empty the parameter is the
+     * first to be added and will be prepended by '?'. If there are existing
+     * parameters a new parameter is appended with an '&'
+     * 
+     * @param queryString original querystring
+     * @param param parameter to be added
+     * @return Updated querystring
+     */
+    public static String addParam(String queryString, String param)
+    {
+
+        // if null create an empty string
+        if (queryString == null)
+        {
+            queryString = "";
+        }
+
+        // first element starts with ? all else are added with &
+        if (queryString.length() == 0)
+        {
+            queryString = "?" + param;
+        }
+        else
+        {
+            queryString = queryString + "&" + param;
+        }
+
+        return queryString;
     }
     
     public static final String BASE_URL = "https://api.dropbox.com/1/";
@@ -202,4 +350,5 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
     public static final String SEARCH_URL = BASE_URL + "search/{appFolderUrl}/{path}";
     public static final String SHARES_URL = BASE_URL + "shares/{appFolderUrl}/{path}";
     public static final String THUMBNAILS_URL = BASE_CONTENT_URL + "thumbnails/{appFolderUrl}/{path}";
+ 
 }
