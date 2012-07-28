@@ -14,7 +14,10 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
+
 import static org.springframework.social.test.client.RequestMatchers.method;
 import static org.springframework.social.test.client.RequestMatchers.requestTo;
 import static org.springframework.social.test.client.ResponseCreators.withResponse;
@@ -22,6 +25,7 @@ import static org.springframework.social.test.client.ResponseCreators.withRespon
 /**
  * @author Bryce Fischer
  * @author Robert Drysdale
+ * @author Jared Ottley
  */
 public class DropboxTemplateTest extends AbstractDropboxApiTest {
     @Test
@@ -60,6 +64,8 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
 			}
 			bytes.write(b);
 		}
+		
+		stream.close();
 		
 		Metadata metadata = dropbox.putFile("file.json", bytes.toByteArray());
 		assertEquals("7702a9405f", metadata.getRev());
