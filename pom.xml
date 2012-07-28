@@ -4,11 +4,10 @@
 
     <groupId>org.springframework.social</groupId>
     <artifactId>spring-social-dropbox</artifactId>
-    <version>1.0.0.M1</version>
-    <packaging>jar</packaging>
+    <version>1.0.0.0</version>
 
     <name>spring-social-dropbox</name>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/Alfresco/spring-social-dropbox</url>
     <properties>
         <java-version>1.6</java-version>
         <org.springframework.social-version>1.0.2.BUILD-SNAPSHOT</org.springframework.social-version>
@@ -35,16 +34,19 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${org.springframework-version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-core</artifactId>
             <version>${org.springframework.social-version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-test</artifactId>
             <version>${org.springframework.social-version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -56,17 +58,20 @@
                     <artifactId>spring-core</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.5</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.1.1</version>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -74,6 +79,7 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>${jacksonVersion}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -146,4 +152,13 @@
 		</plugins>
 
 	</build>
+	<issueManagement>
+	   <system>Github</system>
+	   <url>https://github.com/Alfresco/spring-social-dropbox/issues</url>
+	</issueManagement>
+	<scm>
+	   <url>https://github.com/Alfresco/spring-social-dropbox.git</url>
+	   <connection>http</connection>
+	</scm>
+	<description>This is a branch of https://github.com/vbfischer/spring-social-dropbox.  This branch adds parameters to REST API calls.</description>
 </project>
