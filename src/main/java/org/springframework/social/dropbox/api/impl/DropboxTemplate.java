@@ -1,5 +1,9 @@
 package org.springframework.social.dropbox.api.impl;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -9,7 +13,11 @@ import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.social.dropbox.api.*;
+import org.springframework.social.dropbox.api.Dropbox;
+import org.springframework.social.dropbox.api.DropboxFile;
+import org.springframework.social.dropbox.api.DropboxUserProfile;
+import org.springframework.social.dropbox.api.FileUrl;
+import org.springframework.social.dropbox.api.Metadata;
 import org.springframework.social.oauth1.AbstractOAuth1ApiBinding;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -18,13 +26,10 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.util.List;
-
 /**
  * @author Bryce Fischer
  * @author Robert Drysdale
+ * @author Jared Ottley
  */
 public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox {
 	private final String appFolderUrl;
@@ -165,11 +170,11 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
     public List<Metadata> search(String path, String query, int fileLimit, boolean includeDeleted, String locale)
     {
         String queryString = "";
-        addParam(queryString, "query=" + query);
+        queryString = addParam(queryString, "query=" + query);
         if (fileLimit != 1000){queryString = addParam(queryString, "file_limit=" + fileLimit);}
         if (includeDeleted){queryString = addParam(queryString, "include_deleted=" + includeDeleted);}
         if (locale != null){queryString = addParam(queryString, "locale=" + locale);}
-        
+
         JsonNode node = getRestTemplate().getForObject(SEARCH_URL + queryString, JsonNode.class, appFolderUrl, path);
         
         try {
