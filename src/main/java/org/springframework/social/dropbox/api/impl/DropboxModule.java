@@ -1,18 +1,19 @@
 package org.springframework.social.dropbox.api.impl;
 
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.module.SimpleModule;
 import org.springframework.social.dropbox.api.DropboxUserProfile;
 import org.springframework.social.dropbox.api.FileUrl;
 import org.springframework.social.dropbox.api.Metadata;
+
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * @author Bryce Fischer
  * @author Robert Drysdale
  */
+@SuppressWarnings("serial")
 public class DropboxModule extends SimpleModule {
     public DropboxModule() {
-        super("DropboxModule", new Version(1, 0, 0, null));
+        super("DropboxModule");
     }
 
     @Override

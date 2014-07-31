@@ -1,15 +1,20 @@
 package org.springframework.social.dropbox.api.impl;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.social.dropbox.api.*;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.social.dropbox.api.Dropbox;
+import org.springframework.social.dropbox.api.DropboxFile;
+import org.springframework.social.dropbox.api.DropboxUserProfile;
+import org.springframework.social.dropbox.api.FileUrl;
+import org.springframework.social.dropbox.api.Metadata;
 import org.springframework.social.oauth1.AbstractOAuth1ApiBinding;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -18,9 +23,9 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.util.List;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Bryce Fischer
@@ -86,7 +91,7 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
         JsonNode node = getRestTemplate().getForObject(REVISIONS_URL, JsonNode.class, appFolderUrl, path);
         
         try {
-        	return objectMapper.readValue(node, new TypeReference<List<Metadata>>() {});
+        	return objectMapper.readValue(node.traverse(), new TypeReference<List<Metadata>>() {});
         }
         catch (Exception e) {
         	throw new RuntimeException(e);
@@ -97,7 +102,7 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
         JsonNode node = getRestTemplate().getForObject(SEARCH_URL + "?query=" + query, JsonNode.class, appFolderUrl, path);
         
         try {
-        	return objectMapper.readValue(node, new TypeReference<List<Metadata>>() {});
+        	return objectMapper.readValue(node.traverse(), new TypeReference<List<Metadata>>() {});
         }
         catch (Exception e) {
         	throw new RuntimeException(e);
@@ -174,8 +179,8 @@ public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
 
         for (HttpMessageConverter<?> converter : converters) {
-            if (converter instanceof MappingJacksonHttpMessageConverter) {
-                MappingJacksonHttpMessageConverter jsonConverter = (MappingJacksonHttpMessageConverter) converter;
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                MappingJackson2HttpMessageConverter jsonConverter = (MappingJackson2HttpMessageConverter) converter;
 
                 objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new DropboxModule());

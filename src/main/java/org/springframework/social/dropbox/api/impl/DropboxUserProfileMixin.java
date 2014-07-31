@@ -1,15 +1,16 @@
 package org.springframework.social.dropbox.api.impl;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.springframework.social.dropbox.api.DropboxUserProfile;
-
 import java.io.IOException;
 import java.math.BigInteger;
+
+import org.springframework.social.dropbox.api.DropboxUserProfile;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * @author Bryce Fischer
@@ -22,16 +23,16 @@ public class DropboxUserProfileMixin {
         public DropboxUserProfile deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
             JsonNode tree = jp.readValueAsTree();
 
-            String referralLink = tree.get("referral_link").getValueAsText();
-            String country = tree.get("country").getValueAsText();
-            String displayName = tree.get("display_name").getValueAsText();
-            String email = tree.get("email").getValueAsText();
-            BigInteger uid = tree.get("uid").getBigIntegerValue();
+            String referralLink = tree.get("referral_link").asText();
+            String country = tree.get("country").asText();
+            String displayName = tree.get("display_name").asText();
+            String email = tree.get("email").asText();
+            BigInteger uid = tree.get("uid").bigIntegerValue();
 
             JsonNode quotaNode = tree.get("quota_info");
-            BigInteger sharedQuota = quotaNode.get("shared").getBigIntegerValue();
-            BigInteger quota = quotaNode.get("quota").getBigIntegerValue();
-            BigInteger normalQuota = quotaNode.get("normal").getBigIntegerValue();
+            BigInteger sharedQuota = quotaNode.get("shared").bigIntegerValue();
+            BigInteger quota = quotaNode.get("quota").bigIntegerValue();
+            BigInteger normalQuota = quotaNode.get("normal").bigIntegerValue();
 
             return new DropboxUserProfile(uid, displayName,  email,  country,  referralLink, sharedQuota,  quota, normalQuota);
         }
