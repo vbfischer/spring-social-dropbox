@@ -1,5 +1,67 @@
 
-description = 'Spring Social Dropbox'
-abbreviation = 'SOCIAL-DROPBOX'
+group 'org.springframework.social'
+version '1.1.0.RELEASE'
 
-apply plugin: 'base'
+
+buildscript {
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'http://repo.spring.io/release' }
+    }
+
+    dependencies {
+        classpath 'io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE'
+    }
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+
+ext {
+    springVersion = '3.2.0.RELEASE'
+    springSocialVersion = '1.1.0.RELEASE'
+    springSocialTestVersion = '1.0.3.RELEASE'
+    springSecurityVersion = '3.2.0.RELEASE'
+    jacksonVersion = '2.4.1'
+    mockitoVersion = '1.9.0'
+    jspApiVersion = '2.1'
+    servletApiVersion = '2.5'
+    junitVersion = '4.10'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+    compile "org.springframework:spring-core:${springVersion}"
+    compile "org.springframework:spring-web:${springVersion}"
+    compile "org.springframework.social:spring-social-core:${springSocialVersion}"
+    compile "org.springframework.social:spring-social-web:${springSocialVersion}"
+    compile ("org.springframework.security:spring-security-core:${springSecurityVersion}") {
+        exclude module: "spring-core"
+    }
+    compile "commons-codec:commons-codec:1.5"
+    compile "commons-logging:commons-logging:1.1.1"
+    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "org.springframework:spring-test:${springVersion}"
+    testCompile "org.springframework.social:spring-social-test:${springSocialTestVersion}"
+    testCompile "org.mockito:mockito-all:${mockitoVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = 2.4
+}
+
+dependencyManagement {
+    imports {
+
+    }
+}
