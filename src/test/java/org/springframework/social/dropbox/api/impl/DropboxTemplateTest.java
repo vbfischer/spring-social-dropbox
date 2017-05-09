@@ -15,9 +15,10 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.springframework.http.HttpMethod.*;
-import static org.springframework.social.test.client.RequestMatchers.method;
-import static org.springframework.social.test.client.RequestMatchers.requestTo;
-import static org.springframework.social.test.client.ResponseCreators.withResponse;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 
 /**
  * @author Bryce Fischer
@@ -29,7 +30,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
         mockServer
                 .expect(requestTo("https://api.dropbox.com/1/account/info"))
                 .andExpect(method(GET))
-                .andRespond(withResponse(jsonResource("/profileValid"), responseHeaders));
+                .andRespond(withSuccess(jsonResource("/profileValid"), MediaType.APPLICATION_JSON));
 
         DropboxUserProfile profile = dropbox.getUserProfile();
         assertEquals("US", profile.getCountry());
@@ -49,7 +50,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
         		.replaceFirst("\\{appFolderUrl\\}", "dropbox")
         		.replaceFirst("\\{path\\}", "file.json")))
         .andExpect(method(PUT))
-        .andRespond(withResponse(jsonResource("/file_put_metadata"), responseHeaders));
+        .andRespond(withSuccess(jsonResource("/file_put_metadata"), MediaType.APPLICATION_JSON));
     	
 		FileInputStream stream = new FileInputStream(jsonResource("metadata").getFile());
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -79,7 +80,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
     	mockServer
         .expect(requestTo(DropboxTemplate.COPY_URL))
         .andExpect(method(POST))
-        .andRespond(withResponse(jsonResource("/copy"), responseHeaders));
+        .andRespond(withSuccess(jsonResource("/copy"), MediaType.APPLICATION_JSON));
 		
 		Metadata metadata = dropbox.copy("file.json", "file3.json");
 		assertEquals("8e02a9405f", metadata.getRev());
@@ -99,7 +100,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
     	mockServer
         .expect(requestTo(DropboxTemplate.MOVE_URL))
         .andExpect(method(POST))
-        .andRespond(withResponse(jsonResource("/file_moved"), responseHeaders));
+        .andRespond(withSuccess(jsonResource("/file_moved"), MediaType.APPLICATION_JSON));
 		
 		Metadata metadata = dropbox.move("file.json", "file_moved.json");
 		assertEquals("9202a9405f", metadata.getRev());
@@ -122,7 +123,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
         		.replaceFirst("\\{path\\}", "file3.json")
         		+ "?rev=8e02a9405f"))
         .andExpect(method(GET))
-        .andRespond(withResponse(jsonResource("/restored"), responseHeaders));
+        .andRespond(withSuccess(jsonResource("/restored"), MediaType.APPLICATION_JSON));
 		
 		Metadata metadata = dropbox.restore("file3.json", "8e02a9405f");
 		assertEquals("9302a9405f", metadata.getRev());
@@ -144,7 +145,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
            		.replaceFirst("\\{appFolderUrl\\}", "dropbox")
            		.replaceFirst("\\{path\\}", "file3.json")))
            .andExpect(method(GET))
-           .andRespond(withResponse(jsonResource("/media"), responseHeaders));
+           .andRespond(withSuccess(jsonResource("/media"), MediaType.APPLICATION_JSON));
    		
    		FileUrl url = dropbox.getMedia("file3.json");
    		assertEquals("https://dl.dropbox.com/0/view/6rcp09bdfz1kxfv/file3.json", url.getUrl());
@@ -158,7 +159,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
            		.replaceFirst("\\{appFolderUrl\\}", "dropbox")
            		.replaceFirst("\\{path\\}", "file3.json")))
            .andExpect(method(GET))
-           .andRespond(withResponse(jsonResource("/share"), responseHeaders));
+           .andRespond(withSuccess(jsonResource("/share"), MediaType.APPLICATION_JSON));
    		
    		FileUrl url = dropbox.getShare("file3.json");
    		assertEquals("http://db.tt/LnS1qL1q", url.getUrl());
@@ -173,7 +174,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
         		.replaceFirst("\\{path\\}", "")
         		+ "?query=json"))
         .andExpect(method(GET))
-        .andRespond(withResponse(jsonResource("/search"), responseHeaders));
+        .andRespond(withSuccess(jsonResource("/search"), MediaType.APPLICATION_JSON));
 		
 		List<Metadata> list = dropbox.search("", "json");
 		assertEquals(3, list.size());
@@ -196,7 +197,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
     	mockServer
         .expect(requestTo(DropboxTemplate.CREATE_FOLDER_URL))
         .andExpect(method(POST))
-        .andRespond(withResponse(jsonResource("/create_folder"), responseHeaders));
+        .andRespond(withSuccess(jsonResource("/create_folder"), MediaType.APPLICATION_JSON));
 		
 		Metadata metadata = dropbox.createFolder("test");
 		assertEquals("8f02a9405f", metadata.getRev());
@@ -215,7 +216,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
        	mockServer
            .expect(requestTo(DropboxTemplate.DELETE_URL))
            .andExpect(method(POST))
-           .andRespond(withResponse(jsonResource("/delete"), responseHeaders));
+           .andRespond(withSuccess(jsonResource("/delete"), MediaType.APPLICATION_JSON));
    		
    		Metadata metadata = dropbox.delete("file3.json");
    		assertEquals("9002a9405f", metadata.getRev());
@@ -243,7 +244,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
         		.replaceFirst("\\{appFolderUrl\\}", "dropbox")
         		.replaceFirst("\\{path\\}", "Getting%20Started.pdf")))
         .andExpect(method(GET))
-        .andRespond(withResponse(jsonResource("/metadata"), h));
+        .andRespond(withSuccess(jsonResource("/metadata"), MediaType.APPLICATION_JSON).headers(h));
     	
 		DropboxFile file = dropbox.getFile("Getting Started.pdf");
 		byte[] bytes = file.getBytes();
@@ -253,7 +254,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
     @Test
     public void getRevisions() throws Exception {
     	mockServer.expect(requestTo(DropboxTemplate.REVISIONS_URL.replaceFirst("\\{appFolderUrl\\}", "dropbox").replaceFirst("\\{path\\}", "file.json"))).andExpect(method(GET))
-		.andRespond(withResponse(jsonResource("/revisions"), responseHeaders));
+		.andRespond(withSuccess(jsonResource("/revisions"), MediaType.APPLICATION_JSON));
 		List<Metadata> revisions = dropbox.getRevisions("file.json");
 		
 		Metadata file = revisions.get(0);
@@ -284,7 +285,7 @@ public class DropboxTemplateTest extends AbstractDropboxApiTest {
     @Test
 	public void getMetadata() throws Exception {
 		mockServer.expect(requestTo(DropboxTemplate.METADATA_URL.replaceFirst("\\{appFolderUrl\\}", "dropbox").replaceFirst("\\{path\\}", ""))).andExpect(method(GET))
-		.andRespond(withResponse(jsonResource("/metadata"), responseHeaders));
+		.andRespond(withSuccess(jsonResource("/metadata"), MediaType.APPLICATION_JSON));
 		Metadata metadata = dropbox.getItemMetadata("");
 		
 		assertEquals("0881bfe7f09e0fe856cf9a27000ac00c", metadata.getHash());
