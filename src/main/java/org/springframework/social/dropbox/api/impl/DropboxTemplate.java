@@ -15,7 +15,6 @@ import org.springframework.social.dropbox.api.DropboxFile;
 import org.springframework.social.dropbox.api.DropboxUserProfile;
 import org.springframework.social.dropbox.api.FileUrl;
 import org.springframework.social.dropbox.api.Metadata;
-import org.springframework.social.oauth1.AbstractOAuth1ApiBinding;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.DefaultResponseErrorHandler;
@@ -26,16 +25,17 @@ import org.springframework.web.util.UriTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 
 /**
  * @author Bryce Fischer
  * @author Robert Drysdale
  */
-public class DropboxTemplate extends AbstractOAuth1ApiBinding implements Dropbox {
+public class DropboxTemplate extends AbstractOAuth2ApiBinding implements Dropbox {
 	private final String appFolderUrl;
 	private ObjectMapper objectMapper;
-    public DropboxTemplate(String appKey, String appSecret, String accessToken, String accessTokenSecret, boolean appFolder) {
-        super(appKey, appSecret, accessToken, accessTokenSecret);
+    public DropboxTemplate(String accessToken, boolean appFolder) {
+        super(accessToken);
         appFolderUrl = appFolder ? "sandbox" : "dropbox";
         registerDropboxJsonModule(getRestTemplate());
     }

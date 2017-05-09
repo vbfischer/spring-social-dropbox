@@ -1,6 +1,6 @@
 package org.springframework.social.dropbox.connect;
 
-import org.springframework.social.connect.support.OAuth1ConnectionFactory;
+import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 import org.springframework.social.dropbox.api.Dropbox;
 
 /**
@@ -9,7 +9,7 @@ import org.springframework.social.dropbox.api.Dropbox;
  * @author Bryce Fischer
  * @author Robert Drysdale
  */
-public class DropboxConnectionFactory extends OAuth1ConnectionFactory<Dropbox> {
+public class DropboxConnectionFactory extends OAuth2ConnectionFactory<Dropbox> {
 	
 	/**
 	 * Dropbox Connection Factory

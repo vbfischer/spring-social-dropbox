@@ -20,7 +20,7 @@ public abstract class AbstractDropboxApiTest {
 
     @Before
     public void setUp() throws Exception {
-        dropbox = new DropboxTemplate("API_KEY", "API_SECRET", "ACCESS_TOKEN", "ACCESS_TOKEN_SECRET", false);
+        dropbox = new DropboxTemplate("ACCESS_TOKEN", false);
         mockServer = MockRestServiceServer.createServer(dropbox.getRestTemplate());
     }
 
