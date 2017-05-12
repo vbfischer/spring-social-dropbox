@@ -10,7 +10,7 @@
 	<name>spring-social-dropbox</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<java-version>1.6</java-version>
+		<java-version>1.8</java-version>
 		<org.springframework.social-version>2.0.0.M2</org.springframework.social-version>
 		<org.springframework-version>5.0.0.M5</org.springframework-version>
 		<!-- todo: security dependency can probably be removed after changing to oauth2 -->
@@ -20,6 +20,7 @@
 		<jacksonVersion>2.8.8</jacksonVersion>
 		<junitVersion>4.12</junitVersion>
 		<mockitoVersion>1.10.19</mockitoVersion>
+		<dropboxVersion>3.0.3</dropboxVersion>
 	</properties>
 
 	<dependencies>
@@ -98,6 +99,12 @@
 			<artifactId>mockito-all</artifactId>
 			<version>${mockitoVersion}</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.dropbox.core</groupId>
+			<artifactId>dropbox-core-sdk</artifactId>
+			<version>${dropboxVersion}</version>
 		</dependency>
 	</dependencies>
 	<repositories>

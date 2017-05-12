@@ -1,20 +1,21 @@
 package org.springframework.social.dropbox.connect;
 
-import org.springframework.social.dropbox.api.Dropbox;
-import org.springframework.social.dropbox.api.impl.DropboxTemplate;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
 import org.springframework.social.oauth2.OAuth2Template;
 
 /**
  * @author Bryce Fischer
  * @author Robert Drysdale
+ * @author Svetoslav Videnov
  */
-public class DropboxServiceProvider extends AbstractOAuth2ServiceProvider<Dropbox> {
-	private final boolean appFolder;
+public class DropboxServiceProvider extends AbstractOAuth2ServiceProvider<DbxClientV2> {
+	private final String clientIdentifier;
 	
-    public DropboxServiceProvider(String appKey, String appSecret, boolean appFolder) {
+    public DropboxServiceProvider(String appKey, String appSecret, String clientIdentifier) {
         super(getOAuth2Template(appKey, appSecret));
-        this.appFolder = appFolder;
+		this.clientIdentifier = clientIdentifier;
     }
 	
 	private static OAuth2Template getOAuth2Template(String appKey, String clientSecret) {
@@ -25,7 +26,8 @@ public class DropboxServiceProvider extends AbstractOAuth2ServiceProvider<Dropbo
 	}
 
     @Override
-    public Dropbox getApi(String accessToken) {
-        return new DropboxTemplate(accessToken, appFolder);
+    public DbxClientV2 getApi(String accessToken) {
+		DbxRequestConfig config = new DbxRequestConfig(this.clientIdentifier);
+		return new DbxClientV2(config, accessToken);
     }
 }

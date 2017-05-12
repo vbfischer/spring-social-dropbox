@@ -1,44 +1,58 @@
 package org.springframework.social.dropbox.connect;
 
+import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.users.FullAccount;
 import org.springframework.social.connect.ApiAdapter;
 import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.UserProfileBuilder;
-import org.springframework.social.dropbox.api.Dropbox;
-import org.springframework.social.dropbox.api.DropboxUserProfile;
-import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author Bryce Fischer
  * @author Robert Drysdale
+ * @author Svetoslav Videnov
  */
-public class DropboxAdapter implements ApiAdapter<Dropbox> {
+public class DropboxAdapter implements ApiAdapter<DbxClientV2> {
     @Override
-    public boolean test(Dropbox dropboxApi) {
+    public boolean test(DbxClientV2 dbx) {
         try {
-            dropboxApi.getUserProfile();
+			dbx.files().listFolder("");
             return true;
-        } catch (HttpClientErrorException e) {
+        } catch (DbxException e) {
             return false;
         }
     }
 
     @Override
-    public void setConnectionValues(Dropbox dropboxApi, ConnectionValues values) {
-        DropboxUserProfile profile = dropboxApi.getUserProfile();
-        values.setProviderUserId(profile.getUid().toString());
-        values.setDisplayName(profile.getDisplayName());
-        values.setProfileUrl(profile.getReferralLink());
+    public void setConnectionValues(DbxClientV2 dbx, ConnectionValues values) {
+		try {
+			FullAccount account = dbx.users().getCurrentAccount();
+			values.setProviderUserId(account.getAccountId());
+			values.setDisplayName(account.getName().getDisplayName());
+			values.setProfileUrl(account.getReferralLink());
+		} catch (DbxException ex) {
+			//todo: look up how logging should be handled in spring social
+		}
     }
 
     @Override
-    public UserProfile fetchUserProfile(Dropbox dropboxApi) {
-        DropboxUserProfile profile = dropboxApi.getUserProfile();
-        return new UserProfileBuilder().setName(profile.getDisplayName()).setUsername(profile.getEmail()).setEmail(profile.getEmail()).build();
+    public UserProfile fetchUserProfile(DbxClientV2 dbx) {
+		try {
+			FullAccount account = dbx.users().getCurrentAccount();
+			return new UserProfileBuilder()
+					.setName(account.getName().getDisplayName())
+					.setUsername(account.getEmail())
+					.setEmail(account.getEmail())
+					.build();
+		} catch (DbxException ex) {
+			//todo: look up how logging should be handled in spring social
+			return null;
+		}
     }
 
     @Override
-    public void updateStatus(Dropbox dropboxApi, String s) {
+    public void updateStatus(DbxClientV2 dropboxApi, String s) {
         // Not Supported
     }
 }
