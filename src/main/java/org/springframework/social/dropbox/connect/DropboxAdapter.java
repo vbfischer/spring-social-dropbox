@@ -3,6 +3,7 @@ package org.springframework.social.dropbox.connect;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.users.FullAccount;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.social.connect.ApiAdapter;
 import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
@@ -13,7 +14,9 @@ import org.springframework.social.connect.UserProfileBuilder;
  * @author Robert Drysdale
  * @author Svetoslav Videnov
  */
+@Slf4j
 public class DropboxAdapter implements ApiAdapter<DbxClientV2> {
+	
     @Override
     public boolean test(DbxClientV2 dbx) {
         try {
@@ -32,7 +35,7 @@ public class DropboxAdapter implements ApiAdapter<DbxClientV2> {
 			values.setDisplayName(account.getName().getDisplayName());
 			values.setProfileUrl(account.getReferralLink());
 		} catch (DbxException ex) {
-			//todo: look up how logging should be handled in spring social
+			log.warn("Exception dropbox adapter while setting connection values.", ex);
 		}
     }
 
@@ -46,7 +49,7 @@ public class DropboxAdapter implements ApiAdapter<DbxClientV2> {
 					.setEmail(account.getEmail())
 					.build();
 		} catch (DbxException ex) {
-			//todo: look up how logging should be handled in spring social
+			log.warn("Exception dropbox adapter while fetching user profile.", ex);
 			return null;
 		}
     }
