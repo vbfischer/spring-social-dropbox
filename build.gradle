@@ -1,5 +1,0 @@
-
-description = 'Spring Social Dropbox'
-abbreviation = 'SOCIAL-DROPBOX'
-
-apply plugin: 'base'

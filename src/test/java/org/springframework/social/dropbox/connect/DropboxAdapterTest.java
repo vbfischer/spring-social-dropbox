@@ -1,12 +1,13 @@
 package org.springframework.social.dropbox.connect;
 
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.users.AccountType;
+import com.dropbox.core.v2.users.DbxUserUsersRequests;
+import com.dropbox.core.v2.users.FullAccount;
+import com.dropbox.core.v2.users.Name;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.social.connect.UserProfile;
-import org.springframework.social.dropbox.api.Dropbox;
-import org.springframework.social.dropbox.api.DropboxUserProfile;
-
-import java.math.BigInteger;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -16,21 +17,33 @@ import static junit.framework.Assert.assertEquals;
  */
 public class DropboxAdapterTest {
     private DropboxAdapter adapter = new DropboxAdapter();
-    private Dropbox dropboxApi = Mockito.mock(Dropbox.class);
+    private DbxClientV2 dropboxApi = Mockito.mock(DbxClientV2.class);
+	private DbxUserUsersRequests dpxUserUsersRequests = Mockito.mock(DbxUserUsersRequests.class);
 
     @Test
     public void fetchProfile() throws Exception {
-        final String country = "USA";
-        final String displayName = "DisplayName";
-        final BigInteger uid = BigInteger.valueOf(1);
-        final BigInteger sharedQuota = BigInteger.valueOf(123);
-        final BigInteger quota = new BigInteger("62277025792");
-        final BigInteger normalQuota = BigInteger.valueOf(323);
-        String email = "emailaddress";
-        String referralLink = "referralLink";
+		final String displayName = "DisplayName";
+		
+		Name name = new Name("giveName", 
+				"sureName", 
+				"familiarName", 
+				displayName, 
+				"abbreviatedName");
+		
+		FullAccount user = new FullAccount("thisIsAnAccountIdAndHasToBe40CharectersL", 
+				name, 
+				"emailaddress", 
+				true, 
+				false, 
+				"en", 
+				"referralLink", 
+				true, 
+				AccountType.BASIC);
 
-        Mockito.when(dropboxApi.getUserProfile())
-                .thenReturn(new DropboxUserProfile(uid, displayName, email, country, referralLink, sharedQuota, quota, normalQuota));
+		Mockito.when(dropboxApi.users())
+				.thenReturn(dpxUserUsersRequests);
+        Mockito.when(dpxUserUsersRequests.getCurrentAccount())
+                .thenReturn(user);
 
         UserProfile profile = adapter.fetchUserProfile(dropboxApi);
 
