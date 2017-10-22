@@ -14,11 +14,12 @@
         <org.springframework.social-version>1.1.0.RELEASE</org.springframework.social-version>
         <org.springframework.social-test-version>1.0.3.RELEASE</org.springframework.social-test-version>
         <org.springframework-version>3.2.15.RELEASE</org.springframework-version>
+        <org.springframework.mvc-version>4.0.8.RELEASE</org.springframework.mvc-version>
         <org.springframework.security-version>4.1.4.RELEASE</org.springframework.security-version>
         <org.slf4j-version>1.6.1</org.slf4j-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jacksonVersion>2.8.6</jacksonVersion>
+        <jacksonVersion>2.9.2</jacksonVersion>
         <jspApiVersion>2.1</jspApiVersion>
         <junitVersion>4.10</junitVersion>
         <mockitoVersion>1.9.0</mockitoVersion>
@@ -32,6 +33,11 @@
             <version>${junitVersion}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.mvc-version}</version>
+		</dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
