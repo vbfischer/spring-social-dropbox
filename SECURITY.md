@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-None at this time.  It was a quick class project, so it needs refactoring.  May pick the project back up at a later date.
+None at this time.  Consider the parent project.
 
 ## Reporting a Vulnerability
 
