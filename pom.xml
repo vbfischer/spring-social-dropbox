@@ -19,7 +19,7 @@
         <org.slf4j-version>1.6.1</org.slf4j-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jacksonVersion>2.9.2</jacksonVersion>
+        <jacksonVersion>2.10.0.pr2</jacksonVersion>
         <jspApiVersion>2.1</jspApiVersion>
         <junitVersion>4.10</junitVersion>
         <mockitoVersion>1.9.0</mockitoVersion>
