@@ -20,7 +20,7 @@
 
         <jacksonVersion>2.4.1</jacksonVersion>
         <jspApiVersion>2.1</jspApiVersion>
-        <junitVersion>4.10</junitVersion>
+        <junitVersion>4.13.1</junitVersion>
         <mockitoVersion>1.9.0</mockitoVersion>
         <servletApiVersion>2.5</servletApiVersion>
     </properties>
